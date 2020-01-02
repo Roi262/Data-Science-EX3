@@ -19,5 +19,6 @@ def dict_to_bar_graph(my_dict, num_of_words_to_show, head=0):
     my_dict = {k: v for k, v in sorted(my_dict.items(), key=lambda item: item[1], reverse=True)}
     plt.bar(range(num_of_words_to_show), list(my_dict.values())[:num_of_words_to_show], align='center')
     plt.xticks(range(num_of_words_to_show), list(my_dict.keys())[:num_of_words_to_show], rotation=70)
+    plt.yscale('log')
     plt.show()
 

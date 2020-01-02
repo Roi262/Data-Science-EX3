@@ -52,7 +52,7 @@ def b():
             line_words = line.split()
             words += line_words
         words_count = count_words(words)
-        viz.dict_to_bar_graph(words_count, WORD_COUNT)
+        viz.dict_to_bar_graph(words_count, WORD_COUNT, "4.b")
 
 
 def c():
@@ -65,7 +65,7 @@ def c():
             words += line_words
         words = list(filter(lambda word: word not in STOPWORDS, words))
         words_count = count_words(words)
-        viz.dict_to_bar_graph(words_count, WORD_COUNT)
+        viz.dict_to_bar_graph(words_count, WORD_COUNT, "4.c")
 
 
 def d() -> None:
@@ -80,7 +80,7 @@ def d() -> None:
         words = list(map(lambda word: stemmer.stem(word), words))
         stemmed = [stemmer.stem(word) for word in words]
         words_count = count_words(stemmed)
-        viz.dict_to_bar_graph(words_count, WORD_COUNT)
+        viz.dict_to_bar_graph(words_count, WORD_COUNT, "4.d")
 
 
 if __name__ == "__main__":

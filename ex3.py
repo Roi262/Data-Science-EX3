@@ -82,6 +82,47 @@ def d() -> None:
         words_count = count_words(stemmed)
         viz.dict_to_bar_graph(words_count, WORD_COUNT, "4.d")
 
+def is_noun(tag):
+    return tag.startswith("NN")
+
+
+def is_adj(tag):
+    return tag.startswith("JJ")
+
+
+'''Call e with the full txt'''
+def e(text):
+    tokenized = nltk.pos_tag(nltk.tokenize.word_tokenize(text))
+    out = []
+    i = 0
+    while i < len(tokenized):
+        word, tag = tokenized[i]
+        if is_adj(tag):
+            new = word
+            i += 1
+            if i == len(tokenized):
+                break
+            word, tag = tokenized[i]
+            while is_adj(tag):
+                new = new + " " + word
+                i += 1
+                if i == len(tokenized):
+                    break
+                word, tag = tokenized[i]
+            if is_noun(tag):
+                new = new + " " + word
+                i += 1
+                if i == len(tokenized):
+                    break
+                word, tag = tokenized[i]
+                while is_noun(tag):
+                    new = new + " " + word
+                    i += 1
+                    if i == len(tokenized):
+                        break
+                    word, tag = tokenized[i]
+                out.append(new)
+    return out
 
 if __name__ == "__main__":
     b()

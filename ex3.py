@@ -133,9 +133,9 @@ def h(book_file):
 
 
 if __name__ == "__main__":
-    # b()
+    b()
     # c()
     # d()
     # count_adj_noun_phrases()
-    with open(BOOK_PATH) as f:
-        h(f)
+    # with open(BOOK_PATH) as f:
+    #     h(f)

@@ -172,16 +172,6 @@ The top 20 tokens are:
 The output graph:
 \end_layout
 
-\begin_layout Standard
-\begin_inset Graphics
-	filename plots/d.png
-	scale 50
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection*
 (f)
 \end_layout

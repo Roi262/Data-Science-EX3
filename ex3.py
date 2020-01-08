@@ -57,6 +57,7 @@ def d() -> None:
             line = line.replace("{", " ").replace(", ", " ").replace(". ", " ")
             line_words = line.split()
             words += line_words
+        words = list(filter(lambda word: word not in STOPWORDS, words))
         words = list(map(lambda word: stemmer.stem(word), words))
         stemmed = [stemmer.stem(word) for word in words]
         words_count = count_tokens(stemmed)

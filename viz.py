@@ -16,6 +16,7 @@ def dict_to_bar_graph(my_dict, num_of_words_to_show, label):
         num_of_words_to_show = len(my_dict)
 
     my_dict = {k: v for k, v in sorted(my_dict.items(), key=lambda item: item[1], reverse=True)}
+    print(list(my_dict.keys())[:20])
     plt.plot(np.arange(len(my_dict)), list(reversed(sorted(my_dict.values()))))
     plt.xscale('log')
     plt.yscale('log')

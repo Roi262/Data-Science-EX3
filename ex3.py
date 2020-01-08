@@ -5,37 +5,13 @@ import nltk
 # nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
-# import tqdm
+import wordcloud
 from tqdm import tqdm
 
 STOPWORDS = set(stopwords.words('english'))
 WORD_COUNT = 20
-
-
-# def common_characters():
-#     with open("data\\HPMovies\\HP1.csv") as f:
-#         speaker_counter = defaultdict(int)
-#         major_speakers_counter = defaultdict(int)
-#         for line in f:
-#             speaker = line.split(",")[0]
-#             speaker_counter[speaker] += 1
-#         viz.dict_to_bar_graph(dict, MAJOR_CHAR_COUNT)
-
-
-# def common_words(use_stopwords=False):
-#     with open("Karamazov.txt") as f:
-#         words_counter = defaultdict(int)
-#         for line in f:
-#             line = line.replace("{", " ").replace(", ", " ").replace(". ", " ")
-#             for word in line.split():
-#                 if word.isspace():
-#                     continue
-#                 if use_stopwords:
-#                     if word not in STOPWORDS:
-#                         words_counter[word] += 1
-#                 if not use_stopwords:
-#                     words_counter[word] += 1
-#         viz.dict_to_bar_graph(words_counter, WORD_COUNT)
+BOOK_PATH = 'Karamazov.txt'
+# MINI_BOOK_PATH = 'mini_karamazov.txt'
 
 
 def count_tokens(tokens: list) -> dict:
@@ -43,7 +19,7 @@ def count_tokens(tokens: list) -> dict:
     for word in tokens:
         token_count[word] += 1
     return token_count
-    
+
 
 def b():
     with open("Karamazov.txt") as f:
@@ -84,6 +60,7 @@ def d() -> None:
         words_count = count_tokens(stemmed)
         viz.dict_to_bar_graph(words_count, WORD_COUNT, "4.d")
 
+
 def is_noun(tag):
     return tag.startswith("NN")
 
@@ -98,7 +75,6 @@ def e(text):
     out = []
     i = 0
     while i < len(tokenized):
-        # print('in while')
         word, tag = tokenized[i]
         if is_adj(tag):
             new = word
@@ -129,16 +105,37 @@ def e(text):
             i += 1
     return out
 
+
 def count_adj_noun_phrases():
     with open("Karamazov.txt") as f:
-    # with open("mini_karamazov.txt") as f:
         tokens = e(f.read())
         tokens_count = count_tokens(tokens)
-        viz.dict_to_bar_graph(tokens_count, WORD_COUNT, "count of adj+noun phrases")
+        viz.dict_to_bar_graph(tokens_count, WORD_COUNT,
+                              "count of adj+noun phrases")
+
+
+def get_proper_nouns(book_file):
+    text = book_file.read()
+    tokenized = nltk.pos_tag(nltk.tokenize.word_tokenize(text))
+    proper_nouns = ''
+    for word, tag in tokenized:
+        if tag.startswith("NNP") or tag.startswith("NNPS"):
+            proper_nouns += word + " "
+    return proper_nouns
+
+
+def h(book_file):
+    proper_nouns_text = get_proper_nouns(book_file)
+    cloud = wordcloud.WordCloud(collocations=False).generate(proper_nouns_text)
+    plt.imshow(cloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.show()
+
 
 if __name__ == "__main__":
     # b()
     # c()
     # d()
-    count_adj_noun_phrases()
-
+    # count_adj_noun_phrases()
+    with open(BOOK_PATH) as f:
+        h(f)

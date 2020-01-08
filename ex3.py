@@ -5,6 +5,8 @@ import nltk
 # nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
+# import tqdm
+from tqdm import tqdm
 
 STOPWORDS = set(stopwords.words('english'))
 WORD_COUNT = 20
@@ -36,12 +38,12 @@ WORD_COUNT = 20
 #         viz.dict_to_bar_graph(words_counter, WORD_COUNT)
 
 
-def count_words(words: list) -> dict:
-    words_count = defaultdict(int)
-    for word in words:
-        words_count[word] += 1
-    return words_count
-
+def count_tokens(tokens: list) -> dict:
+    token_count = defaultdict(int)
+    for word in tokens:
+        token_count[word] += 1
+    return token_count
+    
 
 def b():
     with open("Karamazov.txt") as f:
@@ -51,7 +53,7 @@ def b():
             line = line.replace("{", " ").replace(", ", " ").replace(". ", " ")
             line_words = line.split()
             words += line_words
-        words_count = count_words(words)
+        words_count = count_tokens(words)
         viz.dict_to_bar_graph(words_count, WORD_COUNT, "4.b")
 
 
@@ -64,7 +66,7 @@ def c():
             line_words = line.split()
             words += line_words
         words = list(filter(lambda word: word not in STOPWORDS, words))
-        words_count = count_words(words)
+        words_count = count_tokens(words)
         viz.dict_to_bar_graph(words_count, WORD_COUNT, "4.c")
 
 
@@ -79,7 +81,7 @@ def d() -> None:
             words += line_words
         words = list(map(lambda word: stemmer.stem(word), words))
         stemmed = [stemmer.stem(word) for word in words]
-        words_count = count_words(stemmed)
+        words_count = count_tokens(stemmed)
         viz.dict_to_bar_graph(words_count, WORD_COUNT, "4.d")
 
 def is_noun(tag):
@@ -90,12 +92,13 @@ def is_adj(tag):
     return tag.startswith("JJ")
 
 
-'''Call e with the full txt'''
 def e(text):
+    '''Call e with the full txt'''
     tokenized = nltk.pos_tag(nltk.tokenize.word_tokenize(text))
     out = []
     i = 0
     while i < len(tokenized):
+        # print('in while')
         word, tag = tokenized[i]
         if is_adj(tag):
             new = word
@@ -122,9 +125,20 @@ def e(text):
                         break
                     word, tag = tokenized[i]
                 out.append(new)
+        else:
+            i += 1
     return out
 
+def count_adj_noun_phrases():
+    with open("Karamazov.txt") as f:
+    # with open("mini_karamazov.txt") as f:
+        tokens = e(f.read())
+        tokens_count = count_tokens(tokens)
+        viz.dict_to_bar_graph(tokens_count, WORD_COUNT, "count of adj+noun phrases")
+
 if __name__ == "__main__":
-    b()
-    c()
-    d()
+    # b()
+    # c()
+    # d()
+    count_adj_noun_phrases()
+
